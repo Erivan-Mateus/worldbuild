@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia do Mundo — Bestiário & Enciclopédia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0b08;
+    --bg2: #141009;
+    --bg3: #1c1610;
+    --bg4: #231d14;
+    --bg5: #2a2318;
+    --gold: #c8963c;
+    --gold2: #e8b460;
+    --gold3: #f5d080;
+    --gold-dim: #7a5820;
+    --ink: #f0e6cc;
+    --ink2: #c8b896;
+    --ink3: #8c7a5a;
+    --red: #9c3a1e;
+    --red2: #c44a28;
+    --teal: #1e6a5a;
+    --teal2: #28907a;
+    --purple: #5a3a7a;
+    --purple2: #7a52a8;
+    --border: rgba(200,150,60,0.25);
+    --border2: rgba(200,150,60,0.5);
+    --radius: 6px;
+    --shadow: 0 2px 24px rgba(0,0,0,0.6);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(180deg, #0a0806 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border2);
+    padding: 18px 32px 0;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(4px);
+  }
+  .header-top {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
+  }
+  .logo-icon {
+    width: 48px; height: 48px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: var(--gold);
+    background: var(--bg3);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 22px;
+    color: var(--gold3);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+  header h1 span {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: var(--ink3);
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .nav-tabs {
+    display: flex; gap: 2px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--ink3);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    padding: 10px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 7px;
+    position: relative;
+  }
+  .tab-btn:hover { color: var(--gold2); }
+  .tab-btn.active {
+    color: var(--gold3);
+    border-bottom-color: var(--gold);
+  }
+  .tab-btn .tab-count {
+    background: var(--bg4);
+    color: var(--ink3);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    min-width: 20px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .tab-btn.active .tab-count {
+    background: var(--gold-dim);
+    color: var(--gold3);
+    border-color: var(--gold);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .app-body {
+    display: flex; flex: 1; overflow: hidden; height: calc(100vh - 120px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 280px; min-width: 220px; max-width: 320px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    resize: horizontal;
+  }
+  .sidebar-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px;
+  }
+  .search-box {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    padding: 7px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--gold-dim); }
+  .search-box::placeholder { color: var(--ink3); }
+
+  .btn-add {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    color: var(--gold3);
+    font-size: 20px;
+    width: 36px; height: 36px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .btn-add:hover { background: var(--gold); color: var(--bg); }
+
+  .entry-list {
+    flex: 1; overflow-y: auto;
+    padding: 8px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg4) transparent;
+  }
+  .entry-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .entry-item:hover { background: var(--bg3); }
+  .entry-item.active {
+    background: var(--bg4);
+    border-left-color: var(--gold);
+  }
+  .entry-thumb {
+    width: 36px; height: 36px;
+    border-radius: 4px;
+    background: var(--bg4);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    color: var(--ink3);
+  }
+  .entry-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .entry-info { flex: 1; min-width: 0; }
+  .entry-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .entry-sub {
+    font-size: 12px; color: var(--ink3);
+    margin-top: 2px;
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--bg5);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 10px;
+    padding: 1px 6px;
+    color: var(--ink3);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tag.continent { border-color: var(--teal); color: var(--teal2); }
+  .tag.deity-sup { border-color: var(--gold); color: var(--gold2); }
+  .tag.deity-cont { border-color: var(--gold-dim); color: var(--gold); }
+  .tag.magic { border-color: var(--purple); color: var(--purple2); }
+  .tag.creature { border-color: var(--red); color: var(--red2); }
+  .tag.culture { border-color: var(--teal); color: var(--teal2); }
+  .tag.character { border-color: #3a5a7a; color: #6a9ac8; }
+
+  .empty-state {
+    padding: 32px 16px; text-align: center;
+    color: var(--ink3); font-style: italic; font-size: 15px;
+  }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    flex: 1; overflow-y: auto;
+    padding: 28px 32px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg4) transparent;
+  }
+  .detail-welcome {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; min-height: 400px;
+    text-align: center; color: var(--ink3);
+  }
+  .detail-welcome .big-rune {
+    font-size: 64px; margin-bottom: 16px; opacity: 0.3;
+  }
+  .detail-welcome h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 18px; color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  .detail-welcome p { font-size: 15px; font-style: italic; }
+
+  /* Entry detail view */
+  .entry-detail { max-width: 720px; }
+  .detail-hero {
+    display: flex; gap: 24px; margin-bottom: 28px; align-items: flex-start;
+  }
+  .detail-image-box {
+    width: 160px; height: 160px;
+    border-radius: var(--radius);
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px; color: var(--ink3);
+    position: relative;
+    cursor: pointer;
+  }
+  .detail-image-box img { width: 100%; height: 100%; object-fit: cover; }
+  .img-upload-hint {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    color: var(--gold3); font-size: 11px;
+    text-align: center; padding: 4px;
+    font-family: 'Cinzel', serif;
+    opacity: 0; transition: opacity 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .detail-image-box:hover .img-upload-hint { opacity: 1; }
+
+  .detail-meta { flex: 1; }
+  .detail-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 26px;
+    color: var(--gold3);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .detail-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--ink3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .detail-actions {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .btn {
+    border-radius: var(--radius);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-gold {
+    background: var(--gold-dim); border-color: var(--gold);
+    color: var(--gold3);
+  }
+  .btn-gold:hover { background: var(--gold); color: var(--bg); }
+  .btn-ghost {
+    background: transparent; border-color: var(--border2);
+    color: var(--ink2);
+  }
+  .btn-ghost:hover { border-color: var(--gold-dim); color: var(--gold2); }
+  .btn-danger {
+    background: transparent; border-color: rgba(156,58,30,0.5);
+    color: var(--red2);
+  }
+  .btn-danger:hover { background: var(--red); border-color: var(--red); color: var(--ink); }
+
+  .divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 10px;
+  }
+
+  /* Links section */
+  .links-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 4px;
+  }
+  .link-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink2);
+  }
+  .link-chip:hover { border-color: var(--gold-dim); color: var(--gold2); }
+  .link-chip .chip-icon { font-size: 14px; }
+  .link-chip .chip-remove {
+    color: var(--ink3); font-size: 12px;
+    margin-left: 4px; cursor: pointer;
+    display: none;
+  }
+  .link-chip:hover .chip-remove { display: inline; }
+  .link-chip .chip-remove:hover { color: var(--red2); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 500;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    width: 100%; max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg4) transparent;
+  }
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 18px; color: var(--gold3);
+  }
+  .modal-close {
+    background: none; border: none;
+    color: var(--ink3); font-size: 22px;
+    cursor: pointer; line-height: 1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { color: var(--ink); background: var(--bg4); }
+  .modal-body { padding: 20px 24px; }
+  .modal-footer {
+    padding: 14px 24px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 10px; justify-content: flex-end;
+  }
+
+  /* Form fields */
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 6px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    padding: 9px 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--gold-dim);
+  }
+  .field select {
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a5820' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .field option { background: var(--bg2); }
+  .field textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+  .field-row { display: flex; gap: 12px; }
+  .field-row .field { flex: 1; }
+
+  /* Subtype toggle for deuses */
+  .subtype-toggle {
+    display: flex; gap: 6px;
+  }
+  .subtype-btn {
+    flex: 1; padding: 7px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--ink3); font-family: 'Cinzel', serif;
+    font-size: 12px; cursor: pointer; text-align: center;
+    transition: all 0.2s;
+  }
+  .subtype-btn.active {
+    background: var(--gold-dim); border-color: var(--gold);
+    color: var(--gold3);
+  }
+
+  /* Links selector */
+  .links-selector {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg4) transparent;
+  }
+  .links-selector-item {
+    padding: 7px 12px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--ink2);
+    transition: background 0.15s;
+  }
+  .links-selector-item:hover { background: var(--bg4); }
+  .links-selector-item.checked { color: var(--gold2); }
+  .links-selector-item .check-icon { font-size: 13px; width: 16px; text-align: center; }
+
+  /* Export modal */
+  .export-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 4px;
+  }
+  .export-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .export-card:hover { border-color: var(--gold-dim); }
+  .export-card .exp-icon { font-size: 28px; margin-bottom: 6px; }
+  .export-card .exp-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px; color: var(--ink2);
+    margin-bottom: 4px;
+  }
+  .export-card .exp-desc { font-size: 12px; color: var(--ink3); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--gold2);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 10px 18px;
+    box-shadow: var(--shadow);
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ornament line */
+  .ornament {
+    text-align: center; color: var(--gold-dim);
+    font-size: 20px; letter-spacing: 8px;
+    margin: 16px 0;
+    opacity: 0.6;
+  }
+
+  /* description text */
+  .detail-desc {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink2);
+    white-space: pre-wrap;
+  }
+  .detail-desc-placeholder {
+    font-style: italic; color: var(--ink3); font-size: 16px;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+  /* hidden input for image */
+  #image-file-input { display: none; }
+
+  /* continent tree in detail */
+  .attr-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .attr-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+  }
+  .attr-box .ab-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 4px;
+  }
+  .attr-box .ab-value {
+    font-size: 15px; color: var(--ink);
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 6px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 99px;
+    color: var(--ink3); font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.08em;
+    padding: 3px 10px; cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover { border-color: var(--gold-dim); color: var(--gold2); }
+  .filter-chip.active {
+    background: var(--gold-dim); border-color: var(--gold);
+    color: var(--gold3);
+  }
+
+  @media (max-width: 700px) {
+    .sidebar { width: 200px; min-width: 150px; }
+    .detail-hero { flex-direction: column; }
+    .detail-image-box { width: 120px; height: 120px; }
+    header { padding: 12px 16px 0; }
+    .detail-panel { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="logo-icon">✦</div>
+    <h1 id="world-title-display">Guia do Mundo<span id="world-subtitle-display">Bestiário · Deuses · Culturas · Criaturas</span></h1>
+    <div style="margin-left:auto;display:flex;gap:8px;flex-shrink:0">
+      <button class="btn btn-ghost" onclick="openExport()" title="Exportar">⬇ Exportar</button>
+      <button class="btn btn-ghost" onclick="openSettings()" title="Configurações">⚙</button>
+    </div>
+  </div>
+  <nav class="nav-tabs" id="nav-tabs">
+    <button class="tab-btn active" data-tab="all" onclick="switchTab('all',this)">✦ Tudo <span class="tab-count" id="count-all">0</span></button>
+    <button class="tab-btn" data-tab="deity-sup" onclick="switchTab('deity-sup',this)">☀ Deuses Superiores <span class="tab-count" id="count-deity-sup">0</span></button>
+    <button class="tab-btn" data-tab="deity-cont" onclick="switchTab('deity-cont',this)">⛰ Deuses Continentais <span class="tab-count" id="count-deity-cont">0</span></button>
+    <button class="tab-btn" data-tab="magic" onclick="switchTab('magic',this)">✦ Magias <span class="tab-count" id="count-magic">0</span></button>
+    <button class="tab-btn" data-tab="creature" onclick="switchTab('creature',this)">🐉 Criaturas <span class="tab-count" id="count-creature">0</span></button>
+    <button class="tab-btn" data-tab="culture" onclick="switchTab('culture',this)">🏛 Culturas <span class="tab-count" id="count-culture">0</span></button>
+    <button class="tab-btn" data-tab="continent" onclick="switchTab('continent',this)">🗺 Continentes <span class="tab-count" id="count-continent">0</span></button>
+    <button class="tab-btn" data-tab="character" onclick="switchTab('character',this)">👤 Personagens <span class="tab-count" id="count-character">0</span></button>
+  </nav>
+</header>
+
+<!-- MAIN -->
+<div class="app-body">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <input type="text" class="search-box" id="search-input" placeholder="Buscar entradas..." oninput="renderList()">
+      <button class="btn-add" onclick="openAddModal()" title="Nova entrada">+</button>
+    </div>
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="entry-list" id="entry-list">
+      <div class="empty-state">Nenhuma entrada ainda.<br>Clique em + para começar.</div>
+    </div>
+  </div>
+
+  <!-- DETAIL -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-welcome" id="welcome-screen">
+      <div class="big-rune">✦</div>
+      <h2>O Livro Aguarda</h2>
+      <p>Selecione uma entrada ou crie uma nova<br>para começar a registrar os segredos do mundo.</p>
+    </div>
+    <div class="entry-detail" id="entry-detail" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ────── MODAL: NOVA / EDITAR ENTRADA ────── -->
+<div class="modal-overlay" id="entry-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title-text">Nova Entrada</span>
+      <button class="modal-close" onclick="closeModal('entry-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Nome *</label>
+        <input type="text" id="f-name" placeholder="Nome da entrada...">
+      </div>
+      <div class="field">
+        <label>Categoria *</label>
+        <select id="f-cat" onchange="onCatChange()">
+          <option value="">— Selecionar —</option>
+          <option value="deity-sup">Deus Superior</option>
+          <option value="deity-cont">Deus Continental</option>
+          <option value="magic">Magia / Escola de Magia</option>
+          <option value="creature">Criatura</option>
+          <option value="culture">Cultura / Povo</option>
+          <option value="continent">Continente / Região</option>
+          <option value="character">Personagem Histórico</option>
+        </select>
+      </div>
+      <div class="field" id="f-subtype-row" style="display:none">
+        <label>Subtipo</label>
+        <input type="text" id="f-subtype" placeholder="Ex: Deus da Guerra, Dragão Ancião...">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Continente / Região</label>
+          <input type="text" id="f-continent-text" placeholder="Ex: Aethoria, Norte...">
+        </div>
+        <div class="field">
+          <label>Época / Era</label>
+          <input type="text" id="f-era" placeholder="Ex: Era dos Deuses...">
+        </div>
+      </div>
+      <div class="field">
+        <label>Atributo extra (opcional)</label>
+        <input type="text" id="f-attr" placeholder="Ex: Domínio, Porte, Escola, Linhagem...">
+      </div>
+      <div class="field">
+        <label>Descrição</label>
+        <textarea id="f-desc" placeholder="Descreva esta entrada com detalhes, história, lendas..."></textarea>
+      </div>
+      <div class="field">
+        <label>Ligações (entradas relacionadas)</label>
+        <input type="text" id="links-search" placeholder="Buscar entradas para ligar..." oninput="filterLinksSelector()" style="margin-bottom:6px">
+        <div class="links-selector" id="links-selector"></div>
+        <div class="links-grid" id="selected-links" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="btn-delete" style="display:none;margin-right:auto" onclick="deleteEntry()">Excluir</button>
+      <button class="btn btn-ghost" onclick="closeModal('entry-modal')">Cancelar</button>
+      <button class="btn btn-gold" onclick="saveEntry()">✦ Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ────── MODAL: EXPORTAR ────── -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title">Exportar Guia</span>
+      <button class="modal-close" onclick="closeModal('export-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--ink2);margin-bottom:16px;font-size:15px">Escolha o formato de exportação:</p>
+      <div class="export-grid">
+        <div class="export-card" onclick="exportData('json')">
+          <div class="exp-icon">📄</div>
+          <div class="exp-title">JSON</div>
+          <div class="exp-desc">Backup completo. Pode importar depois.</div>
+        </div>
+        <div class="export-card" onclick="exportData('html')">
+          <div class="exp-icon">🌐</div>
+          <div class="exp-title">HTML Legível</div>
+          <div class="exp-desc">Documento formatado para ler no browser.</div>
+        </div>
+        <div class="export-card" onclick="exportData('md')">
+          <div class="exp-icon">📝</div>
+          <div class="exp-title">Markdown</div>
+          <div class="exp-desc">Compatível com Obsidian, Notion, etc.</div>
+        </div>
+        <div class="export-card" onclick="exportData('txt')">
+          <div class="exp-icon">📃</div>
+          <div class="exp-title">Texto Plano</div>
+          <div class="exp-desc">Simples e universal.</div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="field">
+        <label>Importar JSON</label>
+        <input type="file" id="import-file" accept=".json" onchange="importData(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────── MODAL: CONFIGURAÇÕES ────── -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title">Configurações</span>
+      <button class="modal-close" onclick="closeModal('settings-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Nome do Mundo</label>
+        <input type="text" id="s-world-name" placeholder="Ex: Aethoria, Mundi Obscura...">
+      </div>
+      <div class="field">
+        <label>Subtítulo</label>
+        <input type="text" id="s-world-sub" placeholder="Ex: Bestiário · Deuses · Criaturas">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('settings-modal')">Cancelar</button>
+      <button class="btn btn-gold" onclick="saveSettings()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Hidden file input -->
+<input type="file" id="image-file-input" accept="image/*" onchange="handleImageUpload(this)">
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA MODEL
+// ═══════════════════════════════════════════════
+
+const CAT_LABELS = {
+  'deity-sup': 'Deus Superior',
+  'deity-cont': 'Deus Continental',
+  'magic': 'Magia',
+  'creature': 'Criatura',
+  'culture': 'Cultura',
+  'continent': 'Continente',
+  'character': 'Personagem',
+  'all': 'Tudo'
+};
+
+const CAT_ICONS = {
+  'deity-sup': '☀',
+  'deity-cont': '⛰',
+  'magic': '✦',
+  'creature': '🐉',
+  'culture': '🏛',
+  'continent': '🗺',
+  'character': '👤'
+};
+
+let state = {
+  entries: [],
+  worldName: 'Guia do Mundo',
+  worldSub: 'Bestiário · Deuses · Culturas · Criaturas'
+};
+
+let currentTab = 'all';
+let currentEntryId = null;
+let editingId = null;
+let selectedLinks = [];
+
+// ═══════════════════════════════════════════════
+//  STORAGE
+// ═══════════════════════════════════════════════
+
+function save() {
+  localStorage.setItem('world-guide-v2', JSON.stringify(state));
+}
+
+function load() {
+  const raw = localStorage.getItem('world-guide-v2');
+  if (raw) {
+    try {
+      state = JSON.parse(raw);
+      if (!state.entries) state.entries = [];
+    } catch(e) { console.warn('Erro ao carregar dados'); }
+  }
+  document.getElementById('world-title-display').childNodes[0].textContent = state.worldName;
+  document.getElementById('world-subtitle-display').textContent = state.worldSub;
+}
+
+// ═══════════════════════════════════════════════
+//  UI — TABS & FILTER
+// ═══════════════════════════════════════════════
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  currentEntryId = null;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderList();
+  showWelcome();
+}
+
+function getFiltered() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  return state.entries.filter(e => {
+    const matchTab = currentTab === 'all' || e.cat === currentTab;
+    const matchQ = !q || e.name.toLowerCase().includes(q) ||
+      (e.desc||'').toLowerCase().includes(q) ||
+      (e.subtype||'').toLowerCase().includes(q) ||
+      (e.continentText||'').toLowerCase().includes(q);
+    return matchTab && matchQ;
+  });
+}
+
+function updateCounts() {
+  document.getElementById('count-all').textContent = state.entries.length;
+  ['deity-sup','deity-cont','magic','creature','culture','continent','character'].forEach(cat => {
+    const el = document.getElementById('count-' + cat);
+    if (el) el.textContent = state.entries.filter(e => e.cat === cat).length;
+  });
+}
+
+function renderList() {
+  updateCounts();
+  const list = document.getElementById('entry-list');
+  const entries = getFiltered();
+  if (!entries.length) {
+    list.innerHTML = '<div class="empty-state">Nenhuma entrada encontrada.</div>';
+    return;
+  }
+  list.innerHTML = entries.map(e => `
+    <div class="entry-item ${e.id === currentEntryId ? 'active' : ''}" onclick="selectEntry('${e.id}')">
+      <div class="entry-thumb">
+        ${e.image ? `<img src="${e.image}" alt="">` : CAT_ICONS[e.cat] || '?'}
+      </div>
+      <div class="entry-info">
+        <div class="entry-name">${escHtml(e.name)}</div>
+        <div class="entry-sub">
+          <span class="tag ${e.cat}">${CAT_LABELS[e.cat] || e.cat}</span>
+          ${e.continentText ? `<span class="tag continent">${escHtml(e.continentText)}</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════
+//  DETAIL VIEW
+// ═══════════════════════════════════════════════
+
+function showWelcome() {
+  document.getElementById('welcome-screen').style.display = '';
+  document.getElementById('entry-detail').style.display = 'none';
+}
+
+function selectEntry(id) {
+  currentEntryId = id;
+  renderList();
+  const e = state.entries.find(x => x.id === id);
+  if (!e) return showWelcome();
+  document.getElementById('welcome-screen').style.display = 'none';
+  const detail = document.getElementById('entry-detail');
+  detail.style.display = '';
+
+  const linkedEntries = (e.links || []).map(lid => state.entries.find(x => x.id === lid)).filter(Boolean);
+
+  detail.innerHTML = `
+    <div class="detail-hero">
+      <div class="detail-image-box" onclick="triggerImageUpload('${e.id}')" title="Clique para trocar imagem">
+        ${e.image ? `<img src="${e.image}" alt="${escHtml(e.name)}">` : `<span>${CAT_ICONS[e.cat] || '?'}</span>`}
+        <div class="img-upload-hint">Trocar Imagem</div>
+      </div>
+      <div class="detail-meta">
+        <div class="detail-title">${escHtml(e.name)}</div>
+        <div class="detail-subtitle">${escHtml(CAT_LABELS[e.cat] || '')}${e.subtype ? ' · ' + escHtml(e.subtype) : ''}</div>
+        <div class="detail-tags">
+          <span class="tag ${e.cat}">${escHtml(CAT_LABELS[e.cat] || e.cat)}</span>
+          ${e.continentText ? `<span class="tag continent">🗺 ${escHtml(e.continentText)}</span>` : ''}
+          ${e.era ? `<span class="tag">⏳ ${escHtml(e.era)}</span>` : ''}
+        </div>
+        <div class="detail-actions">
+          <button class="btn btn-gold" onclick="openEditModal('${e.id}')">✎ Editar</button>
+          <button class="btn btn-ghost" onclick="triggerImageUpload('${e.id}')">🖼 Imagem</button>
+          ${e.image ? `<button class="btn btn-ghost" onclick="removeImage('${e.id}')">✕ Remover Img</button>` : ''}
+        </div>
+      </div>
+    </div>
+
+    ${e.attr ? `<div class="attr-grid" style="margin-bottom:20px">
+      <div class="attr-box"><div class="ab-label">Atributo</div><div class="ab-value">${escHtml(e.attr)}</div></div>
+    </div>` : ''}
+
+    <hr class="divider">
+    <div class="section-label">✦ Descrição</div>
+    ${e.desc
+      ? `<div class="detail-desc">${escHtml(e.desc)}</div>`
+      : `<div class="detail-desc-placeholder">Nenhuma descrição ainda. Clique em Editar para adicionar.</div>`
+    }
+
+    ${linkedEntries.length ? `
+    <hr class="divider">
+    <div class="section-label">🔗 Ligações</div>
+    <div class="links-grid">
+      ${linkedEntries.map(le => `
+        <div class="link-chip" onclick="selectEntry('${le.id}')">
+          <span class="chip-icon">${CAT_ICONS[le.cat] || '·'}</span>
+          <span>${escHtml(le.name)}</span>
+          <span class="tag ${le.cat}" style="margin-left:4px">${escHtml(CAT_LABELS[le.cat] || le.cat)}</span>
+        </div>
+      `).join('')}
+    </div>` : ''}
+
+    <div class="ornament" style="margin-top:40px">· · ✦ · ·</div>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+//  IMAGE UPLOAD
+// ═══════════════════════════════════════════════
+
+let pendingImageEntryId = null;
+
+function triggerImageUpload(id) {
+  pendingImageEntryId = id;
+  document.getElementById('image-file-input').click();
+}
+
+function handleImageUpload(input) {
+  if (!input.files || !input.files[0] || !pendingImageEntryId) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const e = state.entries.find(x => x.id === pendingImageEntryId);
+    if (e) {
+      e.image = ev.target.result;
+      save();
+      renderList();
+      if (currentEntryId === pendingImageEntryId) selectEntry(pendingImageEntryId);
+    }
+    input.value = '';
+    pendingImageEntryId = null;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function removeImage(id) {
+  const e = state.entries.find(x => x.id === id);
+  if (e) { delete e.image; save(); renderList(); selectEntry(id); }
+}
+
+// ═══════════════════════════════════════════════
+//  MODAL — ADD / EDIT
+// ═══════════════════════════════════════════════
+
+function openAddModal() {
+  editingId = null;
+  selectedLinks = [];
+  document.getElementById('modal-title-text').textContent = 'Nova Entrada';
+  document.getElementById('btn-delete').style.display = 'none';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-cat').value = currentTab !== 'all' ? currentTab : '';
+  document.getElementById('f-subtype').value = '';
+  document.getElementById('f-continent-text').value = '';
+  document.getElementById('f-era').value = '';
+  document.getElementById('f-attr').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('links-search').value = '';
+  onCatChange();
+  renderLinksSelector();
+  renderSelectedLinks();
+  openModal('entry-modal');
+  document.getElementById('f-name').focus();
+}
+
+function openEditModal(id) {
+  editingId = id;
+  const e = state.entries.find(x => x.id === id);
+  if (!e) return;
+  selectedLinks = [...(e.links || [])];
+  document.getElementById('modal-title-text').textContent = 'Editar Entrada';
+  document.getElementById('btn-delete').style.display = '';
+  document.getElementById('f-name').value = e.name;
+  document.getElementById('f-cat').value = e.cat;
+  document.getElementById('f-subtype').value = e.subtype || '';
+  document.getElementById('f-continent-text').value = e.continentText || '';
+  document.getElementById('f-era').value = e.era || '';
+  document.getElementById('f-attr').value = e.attr || '';
+  document.getElementById('f-desc').value = e.desc || '';
+  document.getElementById('links-search').value = '';
+  onCatChange();
+  renderLinksSelector();
+  renderSelectedLinks();
+  openModal('entry-modal');
+}
+
+function onCatChange() {
+  const cat = document.getElementById('f-cat').value;
+  document.getElementById('f-subtype-row').style.display = cat ? '' : 'none';
+}
+
+function saveEntry() {
+  const name = document.getElementById('f-name').value.trim();
+  const cat = document.getElementById('f-cat').value;
+  if (!name) { toast('Preencha o nome da entrada!'); return; }
+  if (!cat) { toast('Selecione uma categoria!'); return; }
+
+  const data = {
+    name,
+    cat,
+    subtype: document.getElementById('f-subtype').value.trim(),
+    continentText: document.getElementById('f-continent-text').value.trim(),
+    era: document.getElementById('f-era').value.trim(),
+    attr: document.getElementById('f-attr').value.trim(),
+    desc: document.getElementById('f-desc').value.trim(),
+    links: [...selectedLinks]
+  };
+
+  if (editingId) {
+    const e = state.entries.find(x => x.id === editingId);
+    Object.assign(e, data);
+    toast('✦ Entrada atualizada!');
+    currentEntryId = editingId;
+  } else {
+    const newEntry = { id: 'e' + Date.now(), ...data };
+    state.entries.push(newEntry);
+    currentEntryId = newEntry.id;
+    toast('✦ Entrada criada!');
+  }
+
+  save();
+  closeModal('entry-modal');
+  renderList();
+  selectEntry(currentEntryId);
+}
+
+function deleteEntry() {
+  if (!editingId) return;
+  if (!confirm('Excluir esta entrada? Esta ação não pode ser desfeita.')) return;
+  state.entries = state.entries.filter(e => e.id !== editingId);
+  // remove links pointing to this entry
+  state.entries.forEach(e => {
+    if (e.links) e.links = e.links.filter(l => l !== editingId);
+  });
+  currentEntryId = null;
+  save();
+  closeModal('entry-modal');
+  renderList();
+  showWelcome();
+  toast('Entrada excluída.');
+}
+
+// ═══════════════════════════════════════════════
+//  LINKS SELECTOR
+// ═══════════════════════════════════════════════
+
+function renderLinksSelector() {
+  const q = document.getElementById('links-search').value.toLowerCase();
+  const sel = document.getElementById('links-selector');
+  const opts = state.entries.filter(e => e.id !== editingId &&
+    (!q || e.name.toLowerCase().includes(q)));
+  if (!opts.length) {
+    sel.innerHTML = '<div style="padding:10px 14px;font-size:13px;color:var(--ink3);font-style:italic">Nenhuma entrada encontrada.</div>';
+    return;
+  }
+  sel.innerHTML = opts.map(e => {
+    const checked = selectedLinks.includes(e.id);
+    return `
+    <div class="links-selector-item ${checked ? 'checked' : ''}" onclick="toggleLink('${e.id}')">
+      <span class="check-icon">${checked ? '✓' : '·'}</span>
+      <span>${CAT_ICONS[e.cat] || ''} ${escHtml(e.name)}</span>
+      <span class="tag ${e.cat}" style="margin-left:auto">${escHtml(CAT_LABELS[e.cat] || e.cat)}</span>
+    </div>`;
+  }).join('');
+}
+
+function filterLinksSelector() { renderLinksSelector(); }
+
+function toggleLink(id) {
+  if (selectedLinks.includes(id)) {
+    selectedLinks = selectedLinks.filter(x => x !== id);
+  } else {
+    selectedLinks.push(id);
+  }
+  renderLinksSelector();
+  renderSelectedLinks();
+}
+
+function renderSelectedLinks() {
+  const container = document.getElementById('selected-links');
+  if (!selectedLinks.length) { container.innerHTML = ''; return; }
+  container.innerHTML = selectedLinks.map(id => {
+    const e = state.entries.find(x => x.id === id);
+    if (!e) return '';
+    return `<div class="link-chip">
+      <span class="chip-icon">${CAT_ICONS[e.cat] || ''}</span>
+      <span>${escHtml(e.name)}</span>
+      <span class="chip-remove" onclick="toggleLink('${e.id}')">✕</span>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+//  EXPORT / IMPORT
+// ═══════════════════════════════════════════════
+
+function openExport() { openModal('export-modal'); }
+
+function exportData(format) {
+  closeModal('export-modal');
+  if (format === 'json') {
+    downloadFile(JSON.stringify(state, null, 2), 'guia-do-mundo.json', 'application/json');
+  } else if (format === 'md') {
+    let md = `# ${state.worldName}\n_${state.worldSub}_\n\n`;
+    const cats = ['deity-sup','deity-cont','magic','creature','culture','continent','character'];
+    cats.forEach(cat => {
+      const group = state.entries.filter(e => e.cat === cat);
+      if (!group.length) return;
+      md += `## ${CAT_LABELS[cat]}\n\n`;
+      group.forEach(e => {
+        md += `### ${e.name}\n`;
+        if (e.subtype) md += `**Subtipo:** ${e.subtype}  \n`;
+        if (e.continentText) md += `**Região:** ${e.continentText}  \n`;
+        if (e.era) md += `**Era:** ${e.era}  \n`;
+        if (e.attr) md += `**Atributo:** ${e.attr}  \n`;
+        if (e.desc) md += `\n${e.desc}\n`;
+        const linked = (e.links||[]).map(lid => state.entries.find(x=>x.id===lid)?.name).filter(Boolean);
+        if (linked.length) md += `\n**Ligações:** ${linked.join(', ')}  \n`;
+        md += '\n---\n\n';
+      });
+    });
+    downloadFile(md, 'guia-do-mundo.md', 'text/markdown');
+  } else if (format === 'txt') {
+    let txt = `${state.worldName}\n${'='.repeat(state.worldName.length)}\n\n`;
+    state.entries.forEach(e => {
+      txt += `[${CAT_LABELS[e.cat]}] ${e.name}\n`;
+      if (e.subtype) txt += `  Subtipo: ${e.subtype}\n`;
+      if (e.continentText) txt += `  Região: ${e.continentText}\n`;
+      if (e.era) txt += `  Era: ${e.era}\n`;
+      if (e.desc) txt += `\n${e.desc}\n`;
+      txt += '\n' + '-'.repeat(40) + '\n\n';
+    });
+    downloadFile(txt, 'guia-do-mundo.txt', 'text/plain');
+  } else if (format === 'html') {
+    let h = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>${escHtml(state.worldName)}</title>
+<style>
+body{font-family:Georgia,serif;max-width:800px;margin:40px auto;padding:0 20px;background:#fdfaf4;color:#2a2010}
+h1{font-size:2em;border-bottom:2px solid #8a6a20;padding-bottom:8px}
+h2{color:#6a4a10;margin-top:2em;font-size:1.4em}
+h3{color:#3a2a08;margin:1.5em 0 0.3em}
+.meta{color:#7a6a40;font-size:0.9em;margin-bottom:0.5em}
+.desc{line-height:1.8}
+.link-badge{display:inline-block;background:#f0e8d0;border:1px solid #c8a040;border-radius:4px;padding:2px 8px;font-size:0.85em;margin:2px}
+hr{border:none;border-top:1px solid #d0b870;margin:1.5em 0}
+</style></head><body>
+<h1>${escHtml(state.worldName)}</h1>
+<p><em>${escHtml(state.worldSub)}</em></p>`;
+    const cats = ['deity-sup','deity-cont','magic','creature','culture','continent','character'];
+    cats.forEach(cat => {
+      const group = state.entries.filter(e => e.cat === cat);
+      if (!group.length) return;
+      h += `<h2>${escHtml(CAT_LABELS[cat])}</h2>`;
+      group.forEach(e => {
+        h += `<h3>${escHtml(e.name)}</h3>`;
+        h += `<div class="meta">`;
+        if (e.subtype) h += `<strong>${escHtml(e.subtype)}</strong> &nbsp;`;
+        if (e.continentText) h += `🗺 ${escHtml(e.continentText)} &nbsp;`;
+        if (e.era) h += `⏳ ${escHtml(e.era)}`;
+        h += `</div>`;
+        if (e.desc) h += `<p class="desc">${escHtml(e.desc).replace(/\n/g,'<br>')}</p>`;
+        const linked = (e.links||[]).map(lid => state.entries.find(x=>x.id===lid)?.name).filter(Boolean);
+        if (linked.length) h += `<p>🔗 Ligações: ${linked.map(n=>`<span class="link-badge">${escHtml(n)}</span>`).join(' ')}</p>`;
+        h += `<hr>`;
+      });
+    });
+    h += `</body></html>`;
+    downloadFile(h, 'guia-do-mundo.html', 'text/html');
+  }
+  toast('✦ Exportado com sucesso!');
+}
+
+function importData(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      if (!imported.entries) throw new Error('Formato inválido');
+      if (!confirm(`Importar ${imported.entries.length} entradas? Os dados atuais serão substituídos.`)) return;
+      state = imported;
+      save();
+      load();
+      renderList();
+      showWelcome();
+      closeModal('export-modal');
+      toast(`✦ ${imported.entries.length} entradas importadas!`);
+    } catch(e) {
+      toast('Erro: arquivo JSON inválido.');
+    }
+    input.value = '';
+  };
+  reader.readAsText(input.files[0]);
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════════════════
+//  SETTINGS
+// ═══════════════════════════════════════════════
+
+function openSettings() {
+  document.getElementById('s-world-name').value = state.worldName;
+  document.getElementById('s-world-sub').value = state.worldSub;
+  openModal('settings-modal');
+}
+
+function saveSettings() {
+  state.worldName = document.getElementById('s-world-name').value.trim() || 'Guia do Mundo';
+  state.worldSub = document.getElementById('s-world-sub').value.trim() || '';
+  document.getElementById('world-title-display').childNodes[0].textContent = state.worldName;
+  document.getElementById('world-subtitle-display').textContent = state.worldSub;
+  document.title = state.worldName;
+  save();
+  closeModal('settings-modal');
+  toast('✦ Configurações salvas!');
+}
+
+// ═══════════════════════════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════════════════════════
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+    e.preventDefault();
+    openAddModal();
+  }
+});
+
+// ═══════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════════
+
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+
+load();
+renderList();
+</script>
+</body>
+</html>
