@@ -181,6 +181,25 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+  /* GALERIA DE IMAGENS */
+  .image-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .gallery-thumb { width: 90px; height: 90px; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; position: relative; cursor: pointer; background: var(--bg3); flex-shrink: 0; }
+  .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.2s; }
+  .gallery-thumb:hover img { opacity: 0.7; }
+  .gallery-thumb-remove { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; border-radius: 3px; font-size: 12px; width: 20px; height: 20px; display: none; align-items: center; justify-content: center; cursor: pointer; line-height: 1; }
+  .gallery-thumb:hover .gallery-thumb-remove { display: flex; }
+  .gallery-thumb-add { width: 90px; height: 90px; border-radius: var(--radius); border: 2px dashed var(--border2); background: var(--bg3); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: var(--ink3); font-size: 11px; font-family: 'Cinzel', serif; letter-spacing: 0.05em; transition: all 0.2s; flex-shrink: 0; gap: 4px; }
+  .gallery-thumb-add:hover { border-color: var(--gold-dim); color: var(--gold2); background: var(--bg4); }
+  .gallery-thumb-add .add-icon { font-size: 22px; }
+  .gallery-main-box { width: 160px; height: 160px; border-radius: var(--radius); background: var(--bg3); border: 1px solid var(--border2); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 56px; color: var(--ink3); position: relative; cursor: pointer; }
+  .gallery-main-box img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-nav { position: absolute; bottom: 6px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
+  .gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+  .gallery-dot.active { background: var(--gold3); }
+  .gallery-arrows { position: absolute; top: 50%; transform: translateY(-50%); width: 100%; display: flex; justify-content: space-between; padding: 0 4px; pointer-events: none; }
+  .gallery-arrow { background: rgba(0,0,0,0.6); color: var(--gold3); border: none; border-radius: 3px; width: 22px; height: 22px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; pointer-events: all; opacity: 0; transition: opacity 0.2s; }
+  .gallery-main-box:hover .gallery-arrow { opacity: 1; }
 </style>
 </head>
 <body>
@@ -759,7 +778,7 @@
 </div>
 
 <div class="toast" id="toast"></div>
-<input type="file" id="image-file-input" accept="image/*" onchange="handleImageUpload(this)">
+<input type="file" id="image-file-input" accept="image/*" multiple onchange="handleImageUpload(this)">
 
 <script>
 const CAT_LABELS = {
@@ -856,7 +875,7 @@ function renderList() {
     else if (e.cat === 'culture') sub = [e.cultureSubtype, e.cultureGov].filter(Boolean).join(' · ');
     else sub = e.continentText || '';
     return `<div class="entry-item ${e.id===currentEntryId?'active':''}" onclick="selectEntry('${e.id}')">
-      <div class="entry-thumb">${e.image ? `<img src="${e.image}" alt="">` : CAT_ICONS[e.cat]||'?'}</div>
+      <div class="entry-thumb">${(e.images&&e.images.length) ? `<img src="${e.images[0]}" alt="">` : (e.image ? `<img src="${e.image}" alt="">` : CAT_ICONS[e.cat]||'?')}</div>
       <div class="entry-info">
         <div class="entry-name">${escHtml(e.name)}</div>
         <div class="entry-sub">
@@ -990,11 +1009,37 @@ function selectEntry(id) {
     if (rows.length) attrsHtml = `<div class="attr-grid">${rows.map(r=>`<div class="attr-box"><div class="ab-label">${r[0]}</div><div class="ab-value">${escHtml(r[1])}</div></div>`).join('')}</div>`;
   }
 
+  // Normalizar: migrar e.image legado para e.images
+  if (e.image && (!e.images || !e.images.length)) { e.images = [e.image]; delete e.image; save(); }
+  if (!e.images) e.images = [];
+
+  const imgs = e.images;
+  const mainImg = imgs.length ? imgs[0] : null;
+
   detail.innerHTML = `
     <div class="detail-hero">
-      <div class="detail-image-box" onclick="triggerImageUpload('${e.id}')">
-        ${e.image ? `<img src="${e.image}" alt="${escHtml(e.name)}">` : `<span>${CAT_ICONS[e.cat]||'?'}</span>`}
-        <div class="img-upload-hint">Trocar Imagem</div>
+      <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+        <div class="gallery-main-box" id="gallery-main-box-${e.id}">
+          ${mainImg ? `<img id="gallery-main-img-${e.id}" src="${mainImg}" alt="${escHtml(e.name)}">` : `<span>${CAT_ICONS[e.cat]||'?'}</span>`}
+          ${imgs.length > 1 ? `
+            <div class="gallery-arrows">
+              <button class="gallery-arrow" onclick="galleryPrev('${e.id}')">‹</button>
+              <button class="gallery-arrow" onclick="galleryNext('${e.id}')">›</button>
+            </div>
+            <div class="gallery-nav">${imgs.map((_,i)=>`<button class="gallery-dot ${i===0?'active':''}" id="gdot-${e.id}-${i}" onclick="galleryGoTo('${e.id}',${i})"></button>`).join('')}</div>
+          ` : ''}
+        </div>
+        <div class="image-gallery">
+          ${imgs.map((img,i)=>`
+            <div class="gallery-thumb" onclick="galleryGoTo('${e.id}',${i})" title="Ver imagem ${i+1}">
+              <img src="${img}" alt="Design ${i+1}">
+              <button class="gallery-thumb-remove" onclick="event.stopPropagation();removeImageAt('${e.id}',${i})" title="Remover">✕</button>
+            </div>`).join('')}
+          <div class="gallery-thumb-add" onclick="triggerImageUpload('${e.id}')" title="Adicionar imagem">
+            <span class="add-icon">＋</span>
+            <span>Imagem</span>
+          </div>
+        </div>
       </div>
       <div class="detail-meta">
         <div class="detail-title">${escHtml(e.name)}</div>
@@ -1029,8 +1074,6 @@ function selectEntry(id) {
         </div>
         <div class="detail-actions">
           <button class="btn btn-gold" onclick="openEditModal('${e.id}')">✎ Editar</button>
-          <button class="btn btn-ghost" onclick="triggerImageUpload('${e.id}')">🖼 Imagem</button>
-          ${e.image ? `<button class="btn btn-ghost" onclick="removeImage('${e.id}')">✕ Remover Img</button>` : ''}
         </div>
       </div>
     </div>
@@ -1049,22 +1092,82 @@ function selectEntry(id) {
     <div class="ornament" style="margin-top:40px">· · ✦ · ·</div>`;
 }
 
-// IMAGE
+// IMAGE — suporte a múltiplas imagens
 let pendingImageEntryId = null;
+let galleryIndex = {};  // entryId -> índice atual exibido na caixa principal
+
 function triggerImageUpload(id) { pendingImageEntryId = id; document.getElementById('image-file-input').click(); }
+
 function handleImageUpload(input) {
-  if (!input.files||!input.files[0]||!pendingImageEntryId) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    const e = state.entries.find(x=>x.id===pendingImageEntryId);
-    if (e) { e.image = ev.target.result; save(); renderList(); if(currentEntryId===pendingImageEntryId) selectEntry(pendingImageEntryId); }
-    input.value = ''; pendingImageEntryId = null;
-  };
-  reader.readAsDataURL(input.files[0]);
+  if (!input.files || !input.files.length || !pendingImageEntryId) return;
+  const e = state.entries.find(x => x.id === pendingImageEntryId);
+  if (!e) { input.value = ''; pendingImageEntryId = null; return; }
+  if (!e.images) e.images = [];
+  // migração legada
+  if (e.image) { e.images.unshift(e.image); delete e.image; }
+
+  const files = Array.from(input.files);
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      e.images.push(ev.target.result);
+      loaded++;
+      if (loaded === files.length) {
+        save(); renderList();
+        const eid = pendingImageEntryId;
+        if (currentEntryId === eid) selectEntry(eid);
+        input.value = ''; pendingImageEntryId = null;
+        toast(`✦ ${files.length > 1 ? files.length + ' imagens adicionadas!' : 'Imagem adicionada!'}`);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
 }
+
+function removeImageAt(id, idx) {
+  const e = state.entries.find(x => x.id === id);
+  if (!e || !e.images) return;
+  if (!confirm('Remover esta imagem?')) return;
+  e.images.splice(idx, 1);
+  if (galleryIndex[id] >= e.images.length) galleryIndex[id] = Math.max(0, e.images.length - 1);
+  save(); renderList(); if (currentEntryId === id) selectEntry(id);
+}
+
 function removeImage(id) {
-  const e = state.entries.find(x=>x.id===id);
-  if (e) { delete e.image; save(); renderList(); selectEntry(id); }
+  const e = state.entries.find(x => x.id === id);
+  if (!e) return;
+  if (!confirm('Remover todas as imagens?')) return;
+  e.images = []; delete e.image;
+  galleryIndex[id] = 0;
+  save(); renderList(); selectEntry(id);
+}
+
+function galleryGoTo(id, idx) {
+  const e = state.entries.find(x => x.id === id);
+  if (!e || !e.images || !e.images[idx]) return;
+  galleryIndex[id] = idx;
+  const imgEl = document.getElementById('gallery-main-img-' + id);
+  if (imgEl) imgEl.src = e.images[idx];
+  // atualizar dots
+  e.images.forEach((_,i) => {
+    const dot = document.getElementById(`gdot-${id}-${i}`);
+    if (dot) dot.classList.toggle('active', i === idx);
+  });
+}
+
+function galleryPrev(id) {
+  const e = state.entries.find(x => x.id === id);
+  if (!e || !e.images || e.images.length < 2) return;
+  const cur = galleryIndex[id] || 0;
+  galleryGoTo(id, (cur - 1 + e.images.length) % e.images.length);
+}
+
+function galleryNext(id) {
+  const e = state.entries.find(x => x.id === id);
+  if (!e || !e.images || e.images.length < 2) return;
+  const cur = galleryIndex[id] || 0;
+  galleryGoTo(id, (cur + 1) % e.images.length);
 }
 
 // MODAL
